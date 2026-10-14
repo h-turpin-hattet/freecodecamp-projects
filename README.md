@@ -16,4 +16,4 @@ Certified projects from the **Scientific Computing with Python** curriculum.
 - pytest
 
 ## Related
-- [python-training](https://github.com/ton-username/python-training) - learning exercises and notes
+- [python-training](https://github.com/h-turpin-hattet/python-training) - learning exercises and notes
