@@ -22,8 +22,15 @@ def test_only_digits():
 def test_maximum_digits():
     assert arithmetic_formatter(["1 + 38091"]) == 'Error: Numbers cannot be more than four digits.'
 
-# Test that result of operation is shown if parameter is set to True  
-def test__result_shown():
+# Test the result of operation is shown if parameter is set to True  
+def test_result_shown():
     assert arithmetic_formatter(["1 + 3801"],True) == '     1\n+ 3801\n------\n  3802'
 
+#Test to verify the correct alignment of oprand and operator
+def test_aligned_operand():
+    assert arithmetic_formatter(["32 + 698"]) == '   32\n+ 698\n-----'
+
+#Test to verify the alignment when more than 1 problem is present
+def test_multiple_problems():
+    assert arithmetic_formatter(["32 + 698", "3801 - 2"]) == '   32      3801\n+ 698    -    2\n-----    ------'
 
