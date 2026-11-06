@@ -9,20 +9,32 @@ def validation(problems):
 
     if problems is None:
         raise ValueError('Input cannot be None')
-    
+
     if len(problems) > 5:
         return False, 'Error: Too many problems.'
-    
-    if any(problem.split()[1] not in ['+', '-'] for problem in problems):
+
+    if any(
+        problem.split()[1] not in ['+', '-']
+        for problem in problems
+    ):
         return False, "Error: Operator must be '+' or '-'."
-    
-    if not all(operand.isdigit() for problem in problems for operand in problem.split()[::2]):
+
+    if not all(
+        operand.isdigit()
+        for problem in problems
+        for operand in problem.split()[::2]
+    ):
         return False, 'Error: Numbers must only contain digits.'
 
-    if any(len(operand)>4 for problem in problems for operand in problem.split()[::2]):
+    if any(
+        len(operand) > 4
+        for problem in problems
+        for operand in problem.split()[::2]
+    ):
         return False, 'Error: Numbers cannot be more than four digits.'
 
     return True, ''
+
 
 def format_problems(problems):
     """
@@ -33,6 +45,7 @@ def format_problems(problems):
     top operands, operator and bottom operands, dashes.
     Problems are separated by 4 spaces and numbers are right-aligned.
     """
+
     line_1_problems = []
     line_2_problems = []
     line_3_problems = []
