@@ -36,6 +36,17 @@ def validation(problems):
     return True, ''
 
 
+def maximum_length(element_problem):
+    """
+    Return the length of the longest operand of a problem.
+
+    Takes a problem already split into its three parts.
+    Returns an integer. The operator is ignored.
+    """
+
+    return len(max(element_problem[::2], key=len))
+
+
 def format_problems(problems):
     """
     Arrange the problems vertically, side by side.
@@ -49,22 +60,33 @@ def format_problems(problems):
     line_1_problems = []
     line_2_problems = []
     line_3_problems = []
+
+    # Build the 3 lines of each problem
     for problem in problems:
-        element_problem = problem.split()
-        max_length_problem = len(max(element_problem[::2],key=len))
-        line_1 = element_problem[0].rjust(max_length_problem+2)
-        line_2 = element_problem[1] + element_problem[2].rjust(max_length_problem+1)
-        line_3 = '-' * (max_length_problem+2)
+        elements_problem = problem.split()
+        max_length_problem = maximum_length(elements_problem)
+        # Problem width = longest operand + operator + one space
+        line_1 = elements_problem[0].rjust(max_length_problem + 2)
+        # Operator takes 1 character, so the operand gets width - 1
+        line_2 = (
+            elements_problem[1]
+            + elements_problem[2].rjust(max_length_problem + 1)
+        )
+        # One dash per character of the problem width
+        line_3 = '-' * (max_length_problem + 2)
         line_1_problems.append(line_1)
         line_2_problems.append(line_2)
         line_3_problems.append(line_3)
-    
-    line_1_result = '    '.join(line_1_problems)
-    line_2_result = '    '.join(line_2_problems)
-    line_3_result = '    '.join(line_3_problems)
-    operation = f'{line_1_result}\n{line_2_result}\n{line_3_result}'
+
+    # Place the problems side by side, separated by 4 spaces
+    line_1_results = '    '.join(line_1_problems)
+    line_2_results = '    '.join(line_2_problems)
+    line_3_results = '    '.join(line_3_problems)
+
+    operation = f'{line_1_results}\n{line_2_results}\n{line_3_results}'
 
     return operation
+
 
 def calculate(problems):
     """
@@ -74,58 +96,73 @@ def calculate(problems):
     Returns a list of integers, one per problem, in the same order.
     Supports addition and subtraction only; results can be negative.
     """
+
     results_list = []
     for problem in problems:
         elements_problem = problem.split()
-        operands = [int(i) for i in elements_problem[::2]]
+        # Operands are at even indexes
+        operands = [int(operand) for operand in elements_problem[::2]]
         if elements_problem[1] == '+':
-            result = operands[0]+operands[1]
-            
+            result = operands[0] + operands[1]
         else:
-            result = operands[0]-operands[1]
+            result = operands[0] - operands[1]
         results_list.append(result)
 
     return results_list
 
-def show_answers(problems,list_results):
-    list_max_length_problem = []
-    for problem in problems:
-        element_problem = problem.split()
-        max_length_problem = len(max(element_problem[::2],key=len))
-        list_max_length_problem.append(max_length_problem)
-    
-    list_results_str = [str(elements) for elements in list_results]
-    list_results_str_spaced = []
-    for i in range(len(list_results)):
-        results_spaced = list_results_str[i].rjust(list_max_length_problem[i]+2)
-        list_results_str_spaced.append(results_spaced)
-    result_line_spaced = '    '.join(list_results_str_spaced)
-    final_result_line = f'\n{result_line_spaced}'
 
-    return final_result_line
+def show_answers(problems, results_list):
+    """
+    Build the answers line shown below the arranged problems.
+
+    Takes the full list of problems and the list of their results
+    (from calculate), in the same order.
+    Returns a string that starts with '\\n', followed by the results
+    right-aligned on the width of their problem and separated by 4 spaces.
+    """
+
+    # Width reference of each problem (same order as the results)
+    max_length_problems_list = []
+    for problem in problems:
+        elements_problem = problem.split()
+        max_length_problem = maximum_length(elements_problem)
+        max_length_problems_list.append(max_length_problem)
+
+    results_str_list = [str(result) for result in results_list]
+
+    # Result n°i is aligned on the width of problem n°i (longest operand + 2)
+    aligned_results_list = []
+    for i in range(len(results_list)):
+        aligned_result = (
+            results_str_list[i].rjust(max_length_problems_list[i] + 2)
+        )
+        aligned_results_list.append(aligned_result)
+    aligned_results_line = '    '.join(aligned_results_list)
+
+    # Leading '\n' lets arithmetic_formatter append this line directly
+    final_results_line = f'\n{aligned_results_line}'
+
+    return final_results_line
 
 
 def arithmetic_formatter(problems, display_answers=False):
-    
-    #Validation
+
+    # Stop early and return the error message if the input is invalid
     status, message = validation(problems)
     if not status:
         return message
 
-    #Format problems
     result = format_problems(problems)
 
-    #return if display is False
+    # Without answers, the 3 arranged lines are the final output
     if not display_answers:
         return result
-    #calculation of results
-    list_results = calculate(problems)
 
-    #format answer line
-    answer_line = show_answers(problems,list_results)
+    # Answers requested: add the results line below the problems
+    results_list = calculate(problems)
+    answer_line = show_answers(problems, results_list)
+
+    # answer_line starts with '\n', so it goes on its own line
     final_result = f'{result}{answer_line}'
 
     return final_result
-
-problems = ["1 + 3801", "32 + 8"]
-print(arithmetic_formatter(problems, display_answers=True))
