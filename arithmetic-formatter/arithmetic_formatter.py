@@ -146,6 +146,14 @@ def show_answers(problems, results_list):
 
 
 def arithmetic_arranger(problems, display_answers=False):
+    """
+    Arrange arithmetic problems vertically, side by side.
+
+    Takes a list of problems and an optional flag.
+    Returns the arranged problems, with their answers below if
+    display_answers is True, or an error message if the input is invalid.
+    Raises ValueError if problems is None.
+    """
 
     # Stop early and return the error message if the input is invalid
     status, message = validation(problems)
@@ -158,7 +166,7 @@ def arithmetic_arranger(problems, display_answers=False):
     if not display_answers:
         return result
 
-    # Answers requested: add the results line below the problems
+    # Answers requested,claculate and add the results line below the problems
     results_list = calculate(problems)
     answer_line = show_answers(problems, results_list)
 
