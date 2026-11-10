@@ -17,3 +17,6 @@ Certified projects from the **Scientific Computing with Python** curriculum.
 
 ## Related
 - [python-training](https://github.com/h-turpin-hattet/python-training) - learning exercises and notes
+
+## Test Pipeline
+- Test du pipeline CI, rien ne devrai être flag car ReadMe racine n'est pas dans le dossier "arithmetic-formatter"
