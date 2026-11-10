@@ -1,5 +1,3 @@
-# Error flake8 for pipeline test, "W293 blank line contains whitespace"
-   
 def validation(problems):
     """
     Validate the list of problems.
@@ -173,6 +171,7 @@ def arithmetic_arranger(problems, display_answers=False):
     answer_line = show_answers(problems, results_list)
 
     # answer_line starts with '\n', so it goes on its own line
-    final_result = f'{result}{answer_line}'
+    # Commented for pipeline test
+    # final_result = f'{result}{answer_line}'
 
     return final_result
