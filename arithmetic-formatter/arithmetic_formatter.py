@@ -145,7 +145,7 @@ def show_answers(problems, results_list):
     return final_results_line
 
 
-def arithmetic_formatter(problems, display_answers=False):
+def arithmetic_arranger(problems, display_answers=False):
 
     # Stop early and return the error message if the input is invalid
     status, message = validation(problems)
