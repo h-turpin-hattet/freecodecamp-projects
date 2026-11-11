@@ -22,4 +22,4 @@ built with pytest and checked by a GitHub Actions pipeline.
 
 ## Related
 
-- [python-training](https://github.com/h-turpin-hattet/python-training) - learning exercises and notes
+- [training](https://github.com/h-turpin-hattet/training) - learning exercises and notes
